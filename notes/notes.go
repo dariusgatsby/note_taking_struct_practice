@@ -16,7 +16,7 @@ type Note struct {
 	CreatedAt   time.Time `json:"created_at"`
 }
 
-func (n Note) CreateNote() Note {
+func New() Note {
 	scanner := bufio.NewScanner(os.Stdin)
 
 	var title string
@@ -62,7 +62,7 @@ func (note Note) SaveToJSON() error {
 	return nil
 }
 
-func ViewNotes() (Note, error) {
+func View() (Note, error) {
 
 	file, err := os.ReadFile("notes.json")
 	if err != nil {

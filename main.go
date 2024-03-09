@@ -4,9 +4,20 @@ import (
 	"fmt"
 
 	"example.com/notes/notes"
+	"example.com/notes/todo"
 )
 
-var n notes.Note
+type saver interface {
+	SaveToJSON() error
+}
+
+func DataSaver(data saver) error {
+	err := data.SaveToJSON()
+	if err != nil {
+		return err
+	}
+	return nil
+}
 
 func main() {
 	fmt.Println("Welcome to your personal note taking app!")
@@ -17,10 +28,9 @@ func main() {
 
 		if choice == 1 {
 
-			finalNote := notes.Note.CreateNote(n)
+			finalNote := notes.New()
 
-			err := notes.Note.SaveToJSON(finalNote)
-
+			err := DataSaver(finalNote)
 			if err != nil {
 				fmt.Println(err)
 				return
@@ -28,15 +38,20 @@ func main() {
 
 		}
 		if choice == 2 {
-			// _, err := notes.ViewNotes()
-
-			// if err != nil {
-			// 	fmt.Println(err)
-			// 	return
-			// }
-			notes.ViewNotes()
+			notes.View()
 		}
 		if choice == 3 {
+			todo := todo.CreateTodo()
+			err := saver.SaveToJSON(todo)
+			if err != nil {
+				fmt.Println(err)
+				return
+			}
+		}
+		if choice == 4 {
+			todo.View()
+		}
+		if choice == 5 {
 			fmt.Println("Bye have a wonderful time!")
 			break
 		}
